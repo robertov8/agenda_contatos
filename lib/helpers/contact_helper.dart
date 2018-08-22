@@ -38,6 +38,25 @@ class ContactHelper {
           "CREATE TABLE $contactTable($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT, $emailColumn TEXT, $phoneColumn TEXT, $imgColumn TEXT)");
     });
   }
+
+  Future<Contact> saveContact(Contact contact) async {
+    Database dbConnect = await db;
+    contact.id = await dbConnect.insert(contactTable, contact.toMap());
+    return contact;
+  }
+
+  Future<Contact> getContact(int id) async {
+    Database dbConnect = await db;
+    List<Map> maps = await dbConnect.query(contactTable,
+        columns: [idColumn, nameColumn, emailColumn, phoneColumn, imgColumn],
+        where: "$idColumn = ?",
+        whereArgs: [id]);
+
+    if (maps.length > 0)
+      return Contact.fromMap(maps.first);
+    else
+      return null;
+  }
 }
 
 class Contact {
