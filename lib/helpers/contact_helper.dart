@@ -20,7 +20,7 @@ class ContactHelper {
   Database _db;
 
   Future<Database> get db async {
-    if (db != null)
+    if (_db != null)
       return _db;
     else {
       _db = await initDB();
@@ -30,7 +30,7 @@ class ContactHelper {
 
   Future<Database> initDB() async {
     final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, 'contacts.db');
+    final path = join(databasesPath, 'contact.db');
 
     return openDatabase(path, version: 1,
         onCreate: (Database db, int newerVersion) async {
@@ -68,9 +68,9 @@ class ContactHelper {
     List listMap = await dbConnect.rawQuery("SELECT * FROM $contactTable");
     List<Contact> listContact = List();
 
-    listMap.map((m) {
+    for (Map m in listMap) {
       listContact.add(Contact.fromMap(m));
-    });
+    }
 
     return listContact;
   }
@@ -92,9 +92,6 @@ class ContactHelper {
     return Sqflite.firstIntValue(
         await dbConnect.rawQuery("SELECT COUNT(*) FROM $contactTable"));
   }
-
-
-
 }
 
 class Contact {
@@ -103,6 +100,8 @@ class Contact {
   String email;
   String phone;
   String img;
+
+  Contact();
 
   Contact.fromMap(Map map) {
     id = map[idColumn];
