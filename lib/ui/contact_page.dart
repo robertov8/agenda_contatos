@@ -48,54 +48,52 @@ class _ContactPageState extends State<ContactPage> {
         backgroundColor: Colors.red,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              children: <Widget>[
-                GestureDetector(
-                  child: Container(
-                    width: 140.0,
-                    height: 140.0,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: _editedContact.img != null
-                                ? FileImage(File(_editedContact.img))
-                                : AssetImage('images/person.png'))),
-                  ),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Nome'),
-                  controller: _nameController,
-                  onChanged: (text) {
-                    _userEdited = true;
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: <Widget>[
+            GestureDetector(
+              child: Container(
+                width: 140.0,
+                height: 140.0,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: _editedContact.img != null
+                            ? FileImage(File(_editedContact.img))
+                            : AssetImage('images/person.png'))),
+              ),
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: 'Nome'),
+              controller: _nameController,
+              onChanged: (text) {
+                _userEdited = true;
 
-                    setState(() {
-                      _editedContact.name = text;
-                    });
-                  },
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'E-mail'),
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (text) {
-                    _userEdited = true;
-                    _editedContact.email = text;
-                  },
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Phone'),
-                  controller: _phoneController,
-                  keyboardType: TextInputType.phone,
-                  onChanged: (text) {
-                    _userEdited = true;
-                    _editedContact.phone = text;
-                  },
-                )
-              ],
-            )),
-      ),
+                setState(() {
+                  _editedContact.name = text;
+                });
+              },
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: 'E-mail'),
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (text) {
+                _userEdited = true;
+                _editedContact.email = text;
+              },
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: 'Phone'),
+              controller: _phoneController,
+              keyboardType: TextInputType.phone,
+              onChanged: (text) {
+                _userEdited = true;
+                _editedContact.phone = text;
+              },
+            )
+          ],
+        )),
     );
   }
 }
