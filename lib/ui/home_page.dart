@@ -14,10 +14,41 @@ class _HomePageState extends State<HomePage> {
 
   List<Contact> contacts = List();
 
+  @override
+  void initState() {
+    super.initState();
+
+    _getAllContacts();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Contatos'),
+        backgroundColor: Colors.red,
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showContactPage();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.red,
+      ),
+      body: ListView.builder(
+        padding: EdgeInsets.all(10.0),
+        itemCount: contacts.length,
+        itemBuilder: _contactCard,
+      ),
+    );
+  }
+
   Widget _contactCard(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        _showContactPage(contact: contacts[index]);
+        _showOptionsPage(context, index);
       },
       child: Card(
         child: Padding(
@@ -88,34 +119,62 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void _showOptionsPage(BuildContext context, int index) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return BottomSheet(
+              onClosing: () {},
+              builder: (context) {
+                return Container(
+                  padding: EdgeInsets.all(0.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: FlatButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Ligar',
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 20.0),
+                            )),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _showContactPage(contact: contacts[index]);
+                            },
+                            child: Text(
+                              'Editar',
+                              style:
+                              TextStyle(color: Colors.red, fontSize: 20.0),
+                            )),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              helper.deleteContact(contacts[index].id);
 
-    _getAllContacts();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Contatos'),
-        backgroundColor: Colors.red,
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showContactPage();
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.red,
-      ),
-      body: ListView.builder(
-        padding: EdgeInsets.all(10.0),
-        itemCount: contacts.length,
-        itemBuilder: _contactCard,
-      ),
-    );
+                              setState(() {
+                                contacts.removeAt(index);
+                              });
+                            },
+                            child: Text(
+                              'Excluir',
+                              style:
+                              TextStyle(color: Colors.red, fontSize: 20.0),
+                            )),
+                      )
+                    ],
+                  ),
+                );
+              });
+        });
   }
 }
